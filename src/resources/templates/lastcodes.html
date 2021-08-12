@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Latest</title>
+</head>
+<body>
+<div th:each="codes: ${code}">
+    <span id="date" th:text="${codes.date}"></span>
+    <pre id="code" th:text="${codes.code}"></pre>
+</div>
+</body>
+</html>
