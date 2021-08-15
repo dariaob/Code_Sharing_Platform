@@ -1,7 +1,26 @@
 package platform.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "codeStorage")
 public class Code {
+
+    @Id
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     String code;
     String date;
 
