@@ -3,7 +3,8 @@ package platform.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import platform.Model.Code;
-import platform.Repository.Repository;
+
+import platform.Service.CodeService;
 import platform.Util.Util;
 
 import java.util.ArrayList;
@@ -11,19 +12,19 @@ import java.util.List;
 
 @RestController
 public class ApiController {
-    private Repository codeRepo;
+    private CodeService codeRepo;
 
 
     public ApiController() {}
 
     @Autowired
-    public ApiController(Repository codeRepo) {
+    public ApiController(CodeService codeRepo) {
         this.codeRepo = codeRepo;
     }
 
     @GetMapping(path = "/api/code/{id}", produces = "application/json;charset=utf-8")
     public Code getApiId (@PathVariable("id") int id) {
-        return codeRepo.getCodeList().get(id - 1);
+        return codeRepo.getCodeList(id);
     }
 
 
@@ -31,7 +32,7 @@ public class ApiController {
     public Object[] getApiLatest() {
         List<Code> code = new ArrayList<>();
         for (int i = codeRepo.lastIndex(); i >= codeRepo.limitOutput(); i--) {
-            Code codeData = codeRepo.getCodeList().get(i);
+            Code codeData = codeRepo.getCodeList(i);
             code.add(codeData);
         }
         return code.toArray();
@@ -43,8 +44,8 @@ public class ApiController {
         repos.setCode(newRepo.getCode());
         repos.setTitle("Code");
         repos.setDate(Util.getDate());
-        codeRepo.getCodeList().add(repos);
-        String response = "{ \"id\" : \"" + codeRepo.getCodeList().size() + "\" }";
+        codeRepo.addToSave(repos);
+        String response = "{ \"id\" : \"" + repos.getId() + "\" }";
         return response;
     }
 }
